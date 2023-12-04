@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomAdmin
+from .admin_models.admin import CustomAdmin
 
 class AdminSerializer(serializers.ModelSerializer): #ModelSerializer is a base class for class UserSerializer
     class Meta:

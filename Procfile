@@ -1,0 +1,1 @@
+web: gunicorn 'itwavesecom.wsgi'

@@ -1,21 +1,57 @@
 from rest_framework import serializers
 from .models import CustomUser
+from ..custom_admin.admin_models.categories import Categories
 from utils.common_functions import hash_password
 
-class UserSerializer(serializers.ModelSerializer): #ModelSerializer is a base class for class UserSerializer
+
+class UserSerializer(serializers.ModelSerializer):
+    user_profile_image = serializers.ImageField(write_only=True, required=False)
+
+  
+    def get_user_profile_image(self, obj):
+        if obj.user_profile_image:
+            return obj.user_profile_image.url
+        
     class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name', 'phone_number', 'email', 'password')
-        extra_fields = {
+        fields = ('_id', 'first_name', 'last_name', 'email', 'password', 'user_profile_image')
+        extra_kwargs = {
             'password': {'write_only': True}
         }
 
+
     def create(self, validated_data):
         password = validated_data.pop('password', None)
+        user_profile_image = validated_data.pop('user_profile_image', None)
         instance = self.Meta.model(**validated_data)
         if password is not None:
             instance.set_password(password)
             # instance.password = hash_password(password)
+
+        if user_profile_image is not None:
+            instance.user_profile_image = user_profile_image
             
         instance.save()
         return instance
+   
+
+
+class CommonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Categories
+        fields = ('__all__')
+
+    category_id = serializers.PrimaryKeyRelatedField(queryset=Categories.objects.all())
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Categories
+        fields = ('__all__')
+
+
+
+class CommonUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('__all__')

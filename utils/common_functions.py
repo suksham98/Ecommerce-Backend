@@ -1,4 +1,6 @@
 import bcrypt
+from rest_framework.exceptions import AuthenticationFailed
+import jwt, datetime
 
 
 def hash_password(password): 
@@ -20,10 +22,16 @@ def check_password(password, userPassword):
     print(bcrypt.checkpw(userBytes, hashed))
     return bcrypt.checkpw(userBytes, hashed)
 
-# Taking user entered password  
-# userPassword =  'passwordabc'
-# hash = bcrypt.hashpw(bytes, salt)
-# # encoding user password 
-  
-# # checking password 
-# result = bcrypt.checkpw(userBytes, hash) 
+
+def auth(request):
+    token = request.COOKIES.get('jwt')
+    algorithm_used = 'HS256'
+
+    if not token:
+            raise AuthenticationFailed('Unauthenticated!')
+
+    try:
+        return jwt.decode(token, 'secret', algorithms=[algorithm_used])
+    
+    except jwt.ExpiredSignatureError as e:
+            raise AuthenticationFailed('Unauthenticated!') from e
