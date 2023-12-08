@@ -1,7 +1,7 @@
 from django.db import models
-from ..models import CustomUser
+from .user import CustomUser
 import uuid
-from ...custom_admin.admin_models.products import Products
+from ...custom_admin.models.products import Products
 from .user_cart import UserCart
 
 # Create your models here.

@@ -1,7 +1,7 @@
-# Django Boilerplate
+# Django Demo Backend Project
 ### This is a _demo backend_, we can start any Django Backend Project from this setup.
 
-You can also check my other repositories on My [GitHub Account](https://github.com/aryasuksham/)
+You can also check my other repositories on My [GitHub Account](https://github.com/suksham98/)
 
 I will be creating common functions which can be used in any project, Like:
 1. Signup
@@ -13,6 +13,10 @@ I will be creating common functions which can be used in any project, Like:
 1. User Authentication etc. 
 
 #### Important commands of this setup:
+- First you need to activate the virtual environment by the following command:-
+  - source venv/Scripts/activate (for windows)    
+  - source venv/bin/activate (for ubuntu)
+- Change working directory to itwavesecom, then all following commands will work:-
 - To run the project:
   - python manage.py runserver
 - To add any other dependency:

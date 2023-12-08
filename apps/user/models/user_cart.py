@@ -1,12 +1,9 @@
 from django.db import models
-from ..models import CustomUser
+from .user import CustomUser
 import uuid
 
-# Create your models here.
-from django.contrib.auth.models import AbstractBaseUser
+# Cart Model for User
 
-
-# Customized user model
 class UserCart(models.Model):
     _id = models.UUIDField(
         primary_key = True, 

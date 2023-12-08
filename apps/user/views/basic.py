@@ -1,37 +1,36 @@
-from django.shortcuts import render
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from ..serializer import UserSerializer, CommonSerializer, CommonUserSerializer
 from rest_framework.response import Response
-from utils.common_functions import hash_password
-from ..models import CustomUser
-from ...custom_admin.admin_models.categories import Categories
-from ...custom_admin.admin_models.products import Products
+from utils.common_functions import hash_password, create_thumbnail
+from ..models.user import CustomUser
+from ...custom_admin.models.categories import Categories
+from ...custom_admin.models.products import Products
 
 from rest_framework.exceptions import AuthenticationFailed
 import jwt, datetime
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 
-
-@api_view(['POST'])
-def signup(request):
-    print("Template directories:", settings.TEMPLATES[0]['DIRS'])
-    print(request.data)
-    return render(request, 'apps/user/signup.html')
-
-
+#Class to handle registration view for users
 class RegisterView(APIView):
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
+        parser_classes = [MultiPartParser, FormParser, JSONParser]
+       
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         password = hash_password(request.data['password'])
-        serializer.password = password 
+ 
+        serializer.password = password
         serializer.save()
-
+        user_profile_image_thumbnail = serializer.instance.user_profile_image_thumbnail
+        print(user_profile_image_thumbnail)
+        
         return Response(serializer.data)
 
 
+#Class to handle User Login 
 class LoginView(APIView):
     def post(self, request):
         email = request.data['email']
@@ -55,6 +54,11 @@ class LoginView(APIView):
         if user.user_profile_image:
             profile_image_url = request.build_absolute_uri(user.user_profile_image.url)
 
+        profile_image_thumbnail_url = None
+        if user.user_profile_image:
+            profile_image_thumbnail_url = request.build_absolute_uri(user.user_profile_image_thumbnail.url)
+
+
         token = jwt.encode(payload, 'secret', algorithm='HS256')
         user_data = {
             '_id':user._id,
@@ -63,6 +67,7 @@ class LoginView(APIView):
             'email':user.email,
             'phone_number':user.phone_number,
             'user_profile_image':profile_image_url,
+            'user_profile_image_thumbnail':profile_image_thumbnail_url
         }
         
         
@@ -74,56 +79,9 @@ class LoginView(APIView):
             'user' : user_data
         }
         return response
+   
 
-
-
-class HomeView(APIView):
-    def get(self, request):
-        token = request.COOKIES.get('jwt')
-        algorithm_used = 'HS256'
-        
-        if not token:
-            raise AuthenticationFailed('Unauthenticated!')
-        
-        try:
-            payload = jwt.decode(token, 'secret', algorithms=[algorithm_used])
-        except jwt.ExpiredSignatureError as e:
-            raise AuthenticationFailed('Unauthenticated!') from e
-
-        user = CustomUser.objects.filter(_id=payload['_id']).first()
-        serializer = UserSerializer(user)
-
-        return Response(serializer.data)
-    
-
-
-class ProductsView(APIView):
-    def get(self, request):
-        token = request.COOKIES.get('jwt')
-        algorithm_used = 'HS256'
-        
-        if not token:
-            raise AuthenticationFailed('Unauthenticated!')
-        
-        try:
-            payload = jwt.decode(token, 'secret', algorithms=[algorithm_used])
-        except jwt.ExpiredSignatureError as e:
-            raise AuthenticationFailed('Unauthenticated!') from e
-
-        # categories = Categories.objects.filter(status=1)
-        # serializer = CommonSerializer(categories, many=True)
-        products = Products.objects.filter(status=1)
-        serializer = CommonSerializer(products, many=True)
-        # data = {
-        #     'Categories' : serializer.data,
-        #     'Products' : serializer1.data
-        # }
-        # print(serializer.data['category_id'])
-        return Response(serializer.data)
-    
-
-
-
+#Class to handle User Logout
 class LogoutView(APIView):
     def post(self, request):
         response = Response()
