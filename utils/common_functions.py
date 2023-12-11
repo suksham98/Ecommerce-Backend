@@ -42,25 +42,6 @@ def auth(request):
             raise AuthenticationFailed('Unauthenticated!') from e
     
 
-
-# def create_thumbnail(user_profile_image):
-#         try:
-#             file_content = user_profile_image.read()
-#             user_profile_image_thumbnail = Image.open(user_profile_image)
-
-#             width, height = user_profile_image_thumbnail.size
-#             user_profile_image_thumbnail = user_profile_image_thumbnail.resize((width, height))    #PIL.Image.ANTIALIAS)
-#             thumbnail_path = os.path.join(
-#                 'images/thumbnails',
-#                 f"{os.path.splitext(os.path.basename(user_profile_image.name))[0]}_thumbnail.jpg"
-#             )
-
-#             user_profile_image_thumbnail.save(thumbnail_path, format='JPEG')
-#             return user_profile_image_thumbnail
-#         except Exception as e:
-#               print(e)
-
-
 def create_thumbnail(user_profile_image):
         user_profile_image_thumbnail = Image.open(BytesIO(user_profile_image.read()))
 

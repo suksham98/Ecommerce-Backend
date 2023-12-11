@@ -14,7 +14,7 @@ I will be creating common functions which can be used in any project, Like:
 
 #### Important commands of this setup:
 - First you need to activate the virtual environment by the following command:-
-  - source venv/Scripts/activate (for windows)    
+  - venv/Scripts/activate (for windows)    
   - source venv/bin/activate (for ubuntu)
 - Change working directory to itwavesecom, then all following commands will work:-
 - To run the project:

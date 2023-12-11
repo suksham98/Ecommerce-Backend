@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 import datetime
+from firebase_admin import initialize_app
 
 # Load environment variables from .env
 load_dotenv()
@@ -46,13 +47,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'storages'
+    'storages',
 ]
 
 
 EXTERNAL_APPS = [
     'apps.custom_admin',
-    'apps.user'
+    'apps.user',
+    'fcm_django',
 ]
 
 INSTALLED_APPS += EXTERNAL_APPS
@@ -198,12 +200,31 @@ STATICFILES_DIRS = [
 # AWS_DEFAULT_ACL = os.getenv('AWS_DEFAULT_ACL')
 # AWS_S3_VERITY = os.getenv('AWS_S3_VERITY')
 # DEFAULT_FILE_STORAGE = os.getenv('DEFAULT_FILE_STORAGE')
-AWS_ACCESS_KEY_ID = 'AKIA2HO5IUQUWOJTJ6QL'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'ecomitwaves'
-AWS_S3_SIGNATURE_NAME = 's3v4'
-AWS_S3_REGION_NAME = 'ap-south-1'
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
-AWS_S3_VERITY = True
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+
+# PUSH_NOTIFICATIONS_SETTINGS = {
+#         "FCM_API_KEY": "[your api key]",
+#         "GCM_API_KEY": "[your api key]",
+#         "APNS_CERTIFICATE": "/path/to/your/certificate.pem",
+# }
+
+
+# Additional arguments are available: credentials, options, name
+FIREBASE_APP = initialize_app()
+# To learn more, visit the docs here:
+# https://cloud.google.com/docs/authentication/getting-started>
+
+FCM_DJANGO_SETTINGS = {
+     # default: _('FCM Django')
+    "APP_VERBOSE_NAME": "[string for AppConfig's verbose_name]",
+     # true if you want to have only one active device per registered user at a time
+     # default: False
+    "ONE_DEVICE_PER_USER": True/False,
+     # devices to which notifications cannot be sent,
+     # are deleted upon receiving error response from FCM
+     # default: False
+    "DELETE_INACTIVE_DEVICES": True/False,
+}
+
+GOOGLE_APPLICATION_CREDENTIALS = 'C:\Users\Lenovo\Downloads\ecomitwaves-firebase-adminsdk-gojzc-107840aca1.json'
