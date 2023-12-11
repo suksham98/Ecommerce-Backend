@@ -11,7 +11,7 @@ from utils.common_functions import send_push_notification
 @api_view(['GET'])
 def send_notification_view(request):
 
-    device_token = 'eEX1IDr0SKCGhaFn30ljf8:APA91bH3S7isbJiWjXbABilATM3DYqnotfipeHCAksBhIZhzvXnFFB13tsq54WJICrSVgcBF1BrJVC2DCoM9b_ThVUBexG-BimblJXcNmJq-SFdyP6LNDfMg1MUYfNaB4lOdHAuOleq3'
+    device_token = 'your_device_token or get it from FCMDevice'
 
     notification_data = {'title': 'New Message', 'body': 'You have a new message!'}
 
@@ -24,7 +24,7 @@ def send_notification_view(request):
 class RegisterDeviceView(APIView):
     def get(self, request, *args, **kwargs):
         # device_token1 = request.data['device_token']
-        device_token = 'eEX1IDr0SKCGhaFn30ljf8:APA91bH3S7isbJiWjXbABilATM3DYqnotfipeHCAksBhIZhzvXnFFB13tsq54WJICrSVgcBF1BrJVC2DCoM9b_ThVUBexG-BimblJXcNmJq-SFdyP6LNDfMg1MUYfNaB4lOdHAuOleq3'
+        device_token = 'your_device_token or get it from FCMDevice'
 
         FCMDevice.objects.create(registration_id=device_token)
         return JsonResponse({'status': 'Device registered successfully!'})
