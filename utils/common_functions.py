@@ -6,6 +6,8 @@ from io import BytesIO
 import os
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
+from fcm_django.models import FCMDevice
+from firebase_admin.messaging import Message
 
 
 def hash_password(password): 
@@ -53,8 +55,6 @@ def create_thumbnail(user_profile_image):
 
         thumbnail_io = BytesIO()
         thumbnail.save(thumbnail_io, format='JPEG')
-    
-        result_image = user_profile_image.name
 
         filename = os.path.basename(user_profile_image.name)
     
@@ -67,12 +67,11 @@ def create_thumbnail(user_profile_image):
 
         with default_storage.open(thumbnail_path, 'wb') as destination:
             destination.write(user_profile_image_thumbnail1.read())
-        # user_profile_image_thumbnail1.save(thumbnail_path, user_profile_image_thumbnail1) #ContentFile(thumbnail_io.getvalue())
 
         thumbnail_io.close()
         return True
 
-
+# This static function was just for testing purposes
 def generateThumbnails():
 
     img = Image.open("images/can.png")
@@ -80,4 +79,25 @@ def generateThumbnails():
   
     img.thumbnail(SIZE)
   
-    img.save('can_thumb.png')
+    img.save('can_thumbnail.png')
+
+
+
+def send_push_notification(device_token, message_data):
+    """
+    Send a push notification to a device.
+    :param device_token: The device token to send the notification to.
+    :param message_data: The data to include in the notification.
+    """
+    try:
+        device = FCMDevice.objects.get(registration_id=device_token)
+
+        message = Message(data=message_data)
+
+        msg = device.send_message(message)
+        print(msg)
+        print(f"Notification sent successfully to {device_token}")
+    except FCMDevice.DoesNotExist:
+        print(f"Device with token {device_token} not found.")
+    except Exception as e:
+        print(f"Error sending notification: {str(e)}")

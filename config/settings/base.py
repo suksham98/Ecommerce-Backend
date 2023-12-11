@@ -10,11 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from firebase_admin import credentials
 from pathlib import Path
 import os
 from dotenv import load_dotenv
 import datetime
 from firebase_admin import initialize_app
+import firebase_admin
 
 # Load environment variables from .env
 load_dotenv()
@@ -55,6 +57,7 @@ EXTERNAL_APPS = [
     'apps.custom_admin',
     'apps.user',
     'fcm_django',
+    'apps.notifications',
 ]
 
 INSTALLED_APPS += EXTERNAL_APPS
@@ -136,6 +139,9 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser',
         'rest_framework.parsers.FormParser',
     ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
 }
 
 
@@ -177,9 +183,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'django_boilerplate', 'media')
 MEDIA_ROOT = os.path.join(BASE_DIR)
-# MEDIA_ROOT = BASE_DIR / "media"
 
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
@@ -202,29 +206,26 @@ STATICFILES_DIRS = [
 # DEFAULT_FILE_STORAGE = os.getenv('DEFAULT_FILE_STORAGE')
 
 
-
-# PUSH_NOTIFICATIONS_SETTINGS = {
-#         "FCM_API_KEY": "[your api key]",
-#         "GCM_API_KEY": "[your api key]",
-#         "APNS_CERTIFICATE": "/path/to/your/certificate.pem",
-# }
-
-
-# Additional arguments are available: credentials, options, name
-FIREBASE_APP = initialize_app()
-# To learn more, visit the docs here:
-# https://cloud.google.com/docs/authentication/getting-started>
-
 FCM_DJANGO_SETTINGS = {
-     # default: _('FCM Django')
-    "APP_VERBOSE_NAME": "[string for AppConfig's verbose_name]",
+    "DEFAULT_FIREBASE_APP": None,
+    "APP_VERBOSE_NAME": "['push notifications']",
+    "FCM_DEVICES_API_KEY": 'AAAAbO_vWZQ:APA91bE_CIkPa5OBWkiZezf4vMlCHnYPxUa5LrViLoLyQYVSTCqrnh4j-h0Wj2jABrYNL5p6KAqZCMrQqNKgz958dGgJwUZYpdLEgdRj7U3ifZqZTr5h1IakCFN4Domvqfi687okWW4i',
      # true if you want to have only one active device per registered user at a time
      # default: False
-    "ONE_DEVICE_PER_USER": True/False,
+    "ONE_DEVICE_PER_USER": False,
      # devices to which notifications cannot be sent,
      # are deleted upon receiving error response from FCM
      # default: False
-    "DELETE_INACTIVE_DEVICES": True/False,
+    "DELETE_INACTIVE_DEVICES": False,
 }
 
-GOOGLE_APPLICATION_CREDENTIALS = 'C:\Users\Lenovo\Downloads\ecomitwaves-firebase-adminsdk-gojzc-107840aca1.json'
+
+FCM_DJANGO_SETTINGS.setdefault(
+    "ERRORS",
+    {
+        "invalid_registration": "InvalidRegistration",
+        "missing_registration": "MissingRegistration",
+        "not_registered": "NotRegistered",
+        "invalid_package_name": "InvalidPackageName",
+    },
+)

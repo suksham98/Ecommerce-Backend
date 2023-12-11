@@ -22,7 +22,8 @@ from django.conf import settings
 urlpatterns = [
     path('myadmin/', admin.site.urls),
     path('admin/', include('apps.custom_admin.urls')),
-    path('user/', include('apps.user.urls'))
+    path('user/', include('apps.user.urls')),
+    path('devices/', include('apps.notifications.urls'))
 
 ]
 
