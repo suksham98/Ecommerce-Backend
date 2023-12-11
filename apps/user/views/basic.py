@@ -24,8 +24,6 @@ class RegisterView(APIView):
  
         serializer.password = password
         serializer.save()
-        user_profile_image_thumbnail = serializer.instance.user_profile_image_thumbnail
-        print(user_profile_image_thumbnail)
         
         return Response(serializer.data)
 
