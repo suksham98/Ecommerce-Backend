@@ -7,16 +7,30 @@ from utils.common_functions import hash_password, create_thumbnail
 from ..models.user import CustomUser
 from ...custom_admin.models.categories import Categories
 from ...custom_admin.models.products import Products
+from services.user_services.swagger import *
 
 from rest_framework.exceptions import AuthenticationFailed
 import jwt, datetime
-from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser, FileUploadParser
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+from rest_framework.decorators import action
+from rest_framework import status
+from django.http import HttpResponse
 
 
 #Class to handle registration view for users
 class RegisterView(APIView):
+    # parser_classes = [MultiPartParser, FormParser, JSONParser, FileUploadParser]
+    parser_classes = [MultiPartParser, FormParser]
+
+    @swagger_auto_schema(
+            operation_id='Register a new user',
+            operation_description='Registering new user by providing various information. ',
+            manual_parameters=register_user_manual_parameters,
+            responses=register_user_responses
+        )
     def post(self, request, *args, **kwargs):
-        parser_classes = [MultiPartParser, FormParser, JSONParser]
        
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -30,6 +44,14 @@ class RegisterView(APIView):
 
 #Class to handle User Login 
 class LoginView(APIView):
+    parser_classes = [FormParser]
+
+    @swagger_auto_schema(
+            operation_id='User Login',
+            operation_description='Login User with email and password. ',
+            manual_parameters=login_user_manual_parameters,
+            responses=login_user_responses
+        )
     def post(self, request):
         email = request.data['email']
         password = request.data['password']
@@ -44,9 +66,9 @@ class LoginView(APIView):
 
         payload = {
             "id": str(user._id),
-            "exp": datetime.datetime.now(datetime.timezone.utc)
+            "exp": datetime.datetime.now(datetime.timezone)
             + datetime.timedelta(minutes=60),
-            'iat': datetime.datetime.now(datetime.timezone.utc),
+            'iat': datetime.datetime.now(datetime.timezone),
         }
         profile_image_url = None
         if user.user_profile_image:
@@ -71,7 +93,8 @@ class LoginView(APIView):
         
         response = Response()
 
-        response.set_cookie(key='jwt', value=token, httponly=True)
+        # response.set_cookie(key='Authorization', value=token, httponly=True)
+        response['Authorization'] = 'Bearer ' + token
         response.data = {
             'token': token,
             'user' : user_data
@@ -81,9 +104,18 @@ class LoginView(APIView):
 
 #Class to handle User Logout
 class LogoutView(APIView):
+
+    @swagger_auto_schema(
+            operation_id='User Logout',
+            operation_description='User Logout. ',
+            manual_parameters=logout_user_manual_parameters,
+            responses=logout_user_responses
+    )
     def post(self, request):
+        print(request.COOKIES.get('Authorization'))
+
         response = Response()
-        response.delete_cookie('jwt')
+        response.delete_cookie('Authorization')
         response.data = {
             'message': 'successfully logged out'
         }

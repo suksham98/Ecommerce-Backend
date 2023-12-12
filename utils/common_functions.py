@@ -31,14 +31,17 @@ def check_password(password, userPassword):
 
 
 def auth(request):
-    token = request.COOKIES.get('jwt')
+    token = request.COOKIES.get('Authorization')
     algorithm_used = 'HS256'
 
     if not token:
             raise AuthenticationFailed('Unauthenticated!')
 
     try:
-        return jwt.decode(token, 'secret', algorithms=[algorithm_used])
+        raw_token = token.replace("Bearer ", "")
+        print(raw_token)
+        decoded_token = jwt.decode(raw_token, verify=False)
+        return jwt.decode(decoded_token, 'secret', algorithms=[algorithm_used])
     
     except jwt.ExpiredSignatureError as e:
             raise AuthenticationFailed('Unauthenticated!') from e

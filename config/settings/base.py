@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
     'storages',
 ]
@@ -58,6 +59,7 @@ EXTERNAL_APPS = [
     'apps.user',
     'fcm_django',
     'apps.notifications',
+    'drf_yasg',
 ]
 
 INSTALLED_APPS += EXTERNAL_APPS
@@ -138,12 +140,16 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
         'rest_framework.parsers.MultiPartParser',
         'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.FileUploadParser'
     ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
     ],
 }
 
+# SIMPLE_JWT = {
+#     'AUTH_HEADER_TYPES': ('Bearer',),
+# }
 
 PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
@@ -183,7 +189,9 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'django_boilerplate', 'media')
 MEDIA_ROOT = os.path.join(BASE_DIR)
+# MEDIA_ROOT = BASE_DIR / "media"
 
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
@@ -204,6 +212,18 @@ STATICFILES_DIRS = [
 # AWS_DEFAULT_ACL = os.getenv('AWS_DEFAULT_ACL')
 # AWS_S3_VERITY = os.getenv('AWS_S3_VERITY')
 # DEFAULT_FILE_STORAGE = os.getenv('DEFAULT_FILE_STORAGE')
+
+
+AWS_ACCESS_KEY_ID = 'AKIA2HO5IUQUWOJTJ6QL'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'ecomitwaves'
+AWS_S3_SIGNATURE_NAME = 's3v4'
+AWS_S3_REGION_NAME = 'ap-south-1'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_S3_VERITY = True
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 
 
 FCM_DJANGO_SETTINGS = {
@@ -229,3 +249,7 @@ FCM_DJANGO_SETTINGS.setdefault(
         "invalid_package_name": "InvalidPackageName",
     },
 )
+
+SWAGGER_SETTINGS = {
+    "DEFAULT_MODEL_RENDERING": "example"
+}

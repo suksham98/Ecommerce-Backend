@@ -26,10 +26,6 @@ urlpatterns = [
 
     path('add_edit_cart/', AddEditCartView.as_view(), name='addeditcart'),
 
-    
-
-
-    # path('signup/', signup, name='signup'),
 
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

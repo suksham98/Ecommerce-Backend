@@ -4,7 +4,7 @@ from ..custom_admin.models.categories import Categories
 from utils.common_functions import hash_password, create_thumbnail, create_thumbnail
 
 
-#Serializer for 
+#Serializer for user
 class UserSerializer(serializers.ModelSerializer):
     user_profile_image = serializers.ImageField(write_only=True, required=False)
 
@@ -16,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
         
     class Meta:
         model = CustomUser
-        fields = ('_id', 'first_name', 'last_name', 'email', 'password', 'user_profile_image', 'user_profile_image_thumbnail')
+        fields = ('_id', 'first_name', 'last_name', 'email','phone_number', 'password', 'user_profile_image', 'user_profile_image_thumbnail')
         extra_kwargs = {
             'password': {'write_only': True}
         }

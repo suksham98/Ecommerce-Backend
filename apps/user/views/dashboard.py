@@ -13,12 +13,23 @@ from ..serializer import UserSerializer, CommonSerializer, CategorySerializer
 from utils.common_functions import auth
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser, FileUploadParser
+from drf_yasg.utils import swagger_auto_schema
+from services.user_services.swagger import *
+from django.http import HttpResponse
 
 
 
 class CategoriesView(APIView):
-    
-    def get(self, request):
+    parser_classes = [FormParser]
+
+    @swagger_auto_schema(
+            operation_id='Get Categories list',
+            operation_description='Get Categories or products related to specific category. ',
+            manual_parameters=categories_list_user_manual_parameters + header_parameters,
+            responses=categories_list_user_responses
+    )
+    def post(self, request):
         categories = Categories.objects.filter(status=1)
 
         if request.GET.get('search'):
@@ -45,7 +56,15 @@ class CategoriesView(APIView):
 
 
 class ProductsView(APIView):
-    def get(self, request):
+    parser_classes = [FormParser]
+
+    @swagger_auto_schema(
+            operation_id='Get Products list',
+            operation_description='Get products list or any specific product. ',
+            manual_parameters=products_list_user_manual_parameters + header_parameters,
+            responses=products_list_user_responses
+    )
+    def post(self, request):
         products = Products.objects.filter(status=1)
         queryset = Products.objects.all()
 
@@ -79,6 +98,14 @@ class HomeView(APIView):
 
 
 class AddEditCartView(APIView):
+    parser_classes = [FormParser]
+
+    @swagger_auto_schema(
+            operation_id='Add a product into cart',
+            operation_description='To Add a product into cart or modify Cart. ',
+            manual_parameters=products_list_user_manual_parameters + header_parameters,
+            responses=products_list_user_responses
+    )
     def post(self, request):
         user_info = auth(request)
 

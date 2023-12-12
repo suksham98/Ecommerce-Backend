@@ -13,21 +13,56 @@ class AuthMiddleware:
         
         if request.path in self.specific_paths:
             
-              token = request.COOKIES.get('jwt')
-              token1 = request.headers['jwt']
+              # token1 = request.COOKIES.get('Authorization')
+              token = request.headers['Authorization']
+
+              if not token or not token.startswith('Bearer '):
+                  raise AuthenticationFailed('Unauthenticated!')
+
+              token2 = token.split(' ')[1]
+
               algorithm_used = 'HS256'
 
-              if not token1:
-                 raise AuthenticationFailed('Unauthenticated!')
-
               try:
-                payload = jwt.decode(token1, 'secret', algorithms=[algorithm_used])
+                print(token2)
+                payload = jwt.decode(token2, 'secret', algorithms=[algorithm_used])
+                print(payload)
+                import datetime
+
+                exp_timestamp = payload['exp']
+                iat_timestamp = payload['iat']
+
+               # Convert Unix timestamps to datetime objects
+                exp_datetime = datetime.datetime.utcfromtimestamp(exp_timestamp)
+                iat_datetime = datetime.datetime.utcfromtimestamp(iat_timestamp)
+
+                exp_local = exp_datetime.replace(tzinfo=datetime.timezone.utc).astimezone()
+                iat_local = iat_datetime.replace(tzinfo=datetime.timezone.utc).astimezone()
+
+               # Print the local time
+                print(f'exp (local time): {exp_local}')
+                print(f'iat (local time): {iat_local}')
+
                 response.payload = payload
     
               except jwt.ExpiredSignatureError as e:
                  print(e)
-                 raise AuthenticationFailed('Unauthenticated!') from e
-            
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+                 
+                 raise AuthenticationFailed('Token has expired!') from e
+            
 
         return response
