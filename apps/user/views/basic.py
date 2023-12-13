@@ -57,7 +57,7 @@ class LoginView(APIView):
         password = request.data['password']
 
         user = CustomUser.objects.filter(email=email).first()
-        print(user)
+        
         if user is None:
             raise AuthenticationFailed('User not found!')
 
@@ -66,9 +66,9 @@ class LoginView(APIView):
 
         payload = {
             "id": str(user._id),
-            "exp": datetime.datetime.now(datetime.timezone)
+            "exp": datetime.datetime.now(datetime.timezone.utc)
             + datetime.timedelta(minutes=60),
-            'iat': datetime.datetime.now(datetime.timezone),
+            'iat': datetime.datetime.now(datetime.timezone.utc),
         }
         profile_image_url = None
         if user.user_profile_image:
@@ -94,7 +94,7 @@ class LoginView(APIView):
         response = Response()
 
         # response.set_cookie(key='Authorization', value=token, httponly=True)
-        response['Authorization'] = 'Bearer ' + token
+        response['Authorization'] =  token
         response.data = {
             'token': token,
             'user' : user_data

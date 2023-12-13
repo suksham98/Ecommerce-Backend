@@ -9,60 +9,27 @@ class AuthMiddleware:
         self.specific_paths = ['/user/user_products/', '/user/categories/', '/user/add_edit_cart/', '/user/home/']
 
     def __call__(self, request):
-        response = self.get_response(request)
         
         if request.path in self.specific_paths:
-            
-              # token1 = request.COOKIES.get('Authorization')
-              token = request.headers['Authorization']
+            try:
+                
+                token = request.headers.get('Authorization')
 
-              if not token or not token.startswith('Bearer '):
-                  raise AuthenticationFailed('Unauthenticated!')
+                if not token:
+                    raise AuthenticationFailed('Unauthenticated!')
 
-              token2 = token.split(' ')[1]
+                # token = token.split(' ')[1]
+                algorithm_used = 'HS256'
 
-              algorithm_used = 'HS256'
+                payload = jwt.decode(token, 'secret', algorithms=[algorithm_used])
+                
+                request.user = payload
 
-              try:
-                print(token2)
-                payload = jwt.decode(token2, 'secret', algorithms=[algorithm_used])
-                print(payload)
-                import datetime
+            except jwt.ExpiredSignatureError as e:
+                raise AuthenticationFailed('Token has expired!') from e
+            except jwt.InvalidTokenError as e:
+                raise AuthenticationFailed('Invalid token!') from e
 
-                exp_timestamp = payload['exp']
-                iat_timestamp = payload['iat']
-
-               # Convert Unix timestamps to datetime objects
-                exp_datetime = datetime.datetime.utcfromtimestamp(exp_timestamp)
-                iat_datetime = datetime.datetime.utcfromtimestamp(iat_timestamp)
-
-                exp_local = exp_datetime.replace(tzinfo=datetime.timezone.utc).astimezone()
-                iat_local = iat_datetime.replace(tzinfo=datetime.timezone.utc).astimezone()
-
-               # Print the local time
-                print(f'exp (local time): {exp_local}')
-                print(f'iat (local time): {iat_local}')
-
-                response.payload = payload
-    
-              except jwt.ExpiredSignatureError as e:
-                 print(e)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                 
-                 raise AuthenticationFailed('Token has expired!') from e
-            
+        response = self.get_response(request)
 
         return response

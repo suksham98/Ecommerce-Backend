@@ -33,6 +33,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('myadmin/', admin.site.urls),
+    # path('jet/', include('jet.urls', 'jet')),
     path('admin/', include('apps.custom_admin.urls')),
     path('user/', include('apps.user.urls')),
     path('devices/', include('apps.notifications.urls')),
