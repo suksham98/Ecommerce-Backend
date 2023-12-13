@@ -237,7 +237,3 @@ FCM_DJANGO_SETTINGS.setdefault(
         "invalid_package_name": "InvalidPackageName",
     },
 )
-
-# SWAGGER_SETTINGS = {
-#     "DEFAULT_MODEL_RENDERING": "example"
-# }

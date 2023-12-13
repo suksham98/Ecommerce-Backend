@@ -10,6 +10,7 @@ from django.http import JsonResponse
 from utils.common_functions import send_push_notification
 
 
+
 @api_view(['GET'])
 def send_notification_view(request):
     # devices = FCMDevice.objects.filter(active=True)
