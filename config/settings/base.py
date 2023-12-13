@@ -217,7 +217,7 @@ DEFAULT_FILE_STORAGE = os.getenv('DEFAULT_FILE_STORAGE')
 FCM_DJANGO_SETTINGS = {
     "DEFAULT_FIREBASE_APP": None,
     "APP_VERBOSE_NAME": "['push notifications']",
-    "FCM_DEVICES_API_KEY": 'AAAAbO_vWZQ:APA91bE_CIkPa5OBWkiZezf4vMlCHnYPxUa5LrViLoLyQYVSTCqrnh4j-h0Wj2jABrYNL5p6KAqZCMrQqNKgz958dGgJwUZYpdLEgdRj7U3ifZqZTr5h1IakCFN4Domvqfi687okWW4i',
+    "FCM_DEVICES_API_KEY": 'your_fcm_devices_api_key',
      # true if you want to have only one active device per registered user at a time
      # default: False
     "ONE_DEVICE_PER_USER": False,
