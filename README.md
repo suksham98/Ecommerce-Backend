@@ -35,8 +35,9 @@ I will be creating common functions which can be used in any project, Like:
    python -m venv env
    ```
 5. Now, activate virtual environment by command:
-  -```
-   env/Scripts/activate #(for windows)
+  -For Windows
+   ```
+   env/Scripts/activate
    ```
      _if you see error saying:- venv/Scripts/activate : File C:\Users\Lenovo\OneDrive\Desktop\demo_backend\venv\Scripts\Activate.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170._
      1. For temporarily bypass the current script execution policy, use command:
@@ -44,14 +45,15 @@ I will be creating common functions which can be used in any project, Like:
         Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
         ```
      2. For global enable, use command:
-       ```
+        ```
         Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
-       ```
+        ```
         RemoteSigned means that locally created scripts (scripts created on the local machine) can run without being digitally signed.
         And again run the env/Scripts/activate command for successfull activation.
-  - ```
-   source env/bin/activate #(for ubuntu)
-    ```
+  - For ubuntu
+   ```
+   source env/bin/activate
+  ```
   Your virtual environment name will be displayed in the terminal/command prompt.
 6. Change the working directory to Ecommerce-Backend directory by using command:
    ```
