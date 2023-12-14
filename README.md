@@ -14,7 +14,7 @@ I will be creating common functions which can be used in any project, Like:
 
 
 ### System Requirements:
-1. Pending...
+1. Pending....
 
 
 ### Steps to run the project:
@@ -37,7 +37,7 @@ I will be creating common functions which can be used in any project, Like:
 5. Now, activate virtual environment by command:
   -```
    env/Scripts/activate #(for windows)
-  ```
+   ```
      _if you see error saying:- venv/Scripts/activate : File C:\Users\Lenovo\OneDrive\Desktop\demo_backend\venv\Scripts\Activate.ps1 cannot be loaded because running scripts is disabled on this system. For more information, see about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170._
      1. For temporarily bypass the current script execution policy, use command:
         ```
@@ -50,8 +50,8 @@ I will be creating common functions which can be used in any project, Like:
         RemoteSigned means that locally created scripts (scripts created on the local machine) can run without being digitally signed.
         And again run the env/Scripts/activate command for successfull activation.
   - ```
-  source env/bin/activate #(for ubuntu)
-  ```
+   source env/bin/activate #(for ubuntu)
+    ```
   Your virtual environment name will be displayed in the terminal/command prompt.
 6. Change the working directory to Ecommerce-Backend directory by using command:
    ```
