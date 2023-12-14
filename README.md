@@ -53,7 +53,7 @@ I will be creating common functions which can be used in any project, Like:
   - For ubuntu
    ```
    source env/bin/activate
-  ```
+   ```
   Your virtual environment name will be displayed in the terminal/command prompt.
 6. Change the working directory to Ecommerce-Backend directory by using command:
    ```
