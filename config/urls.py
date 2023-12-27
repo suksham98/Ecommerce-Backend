@@ -36,8 +36,8 @@ urlpatterns = [
     # path('jet/', include('jet.urls', 'jet')),
     path('admin/', include('apps.custom_admin.urls')),
     path('user/', include('apps.user.urls')),
-    path('devices/', include('apps.notifications.urls')),
-    # url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    # path('devices/', include('apps.notifications.urls')),
+    
     path('^api-docs(?<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('api-docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

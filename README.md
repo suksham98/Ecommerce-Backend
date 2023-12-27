@@ -14,7 +14,15 @@ I will be creating common functions which can be used in any project, Like:
 
 
 ### System Requirements:
-1. Pending....
+1. VS Code 1.85.0
+If Visual Studio Code is not installed, then you can download it from [Here](https://code.visualstudio.com/download).
+2. python 3.11.7 
+You can check if python is installed on your system by using command:
+```
+python --version
+```
+If python is installed, it will show the version of python and if not you can download python from [Here](https://www.python.org/downloads/).
+
 
 
 ### Steps to run the project:
@@ -44,7 +52,7 @@ I will be creating common functions which can be used in any project, Like:
         ```
         Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
         ```
-     2. For global enable, use command:
+     2. For local enabling, use command:
         ```
         Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
         ```
@@ -71,15 +79,27 @@ I will be creating common functions which can be used in any project, Like:
 
 #### Important commands of this setup:
 - First you need to activate the virtual environment by the following command:-
-  - venv/Scripts/activate (for windows)    
-  - source venv/bin/activate (for ubuntu)
+  - For Windows:
+    ```
+    venv/Scripts/activate 
+    ```
+  - For Ubuntu:
+    ```
+    source venv/bin/activate
+    ```
 - Change working directory to itwavesecom, then all following commands will work:-
 - To run the project:
-  - python manage.py runserver
+  ```
+  python manage.py runserver
+  ``` 
 - To add any other dependency:
-  - python -m pip freeze > requirements/base.txt
+  ```
+  python -m pip freeze > requirements/base.txt
+  ```
 - To install all the dependecies:
-  - python -m pip install -r requirements/base.txt
+  ```
+  python -m pip install -r requirements/base.txt
+  ```
 
 _The last 2 commands are for the base file settings, if you want to add or install dependencies for different development or production settings, you would need to replace base.txt with dev.txt or prod.txt accordingly._
 

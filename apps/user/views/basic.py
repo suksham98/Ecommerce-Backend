@@ -44,14 +44,28 @@ class RegisterView(APIView):
 
 #Class to handle User Login 
 class LoginView(APIView):
-    parser_classes = [FormParser]
+    parser_classes = [JSONParser]
 
+    # @swagger_auto_schema(
+    #         operation_id='User Login',
+    #         operation_description='Login User with email and password. ',
+    #         manual_parameters=login_user_manual_parameters,
+    #         responses=login_user_responses
+    #     )
     @swagger_auto_schema(
-            operation_id='User Login',
-            operation_description='Login User with email and password. ',
-            manual_parameters=login_user_manual_parameters,
-            responses=login_user_responses
-        )
+    operation_id='User Login',
+    operation_description='Login User with email and password.',
+    # manual_parameters=login_user_manual_parameters,
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['email', 'password'],
+        properties={
+            'email': openapi.Schema(type=openapi.TYPE_STRING),
+            'password': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_PASSWORD),
+        },
+    ),
+    responses=login_user_responses,
+   )
     def post(self, request):
         email = request.data['email']
         password = request.data['password']

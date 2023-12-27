@@ -8,7 +8,7 @@ from django.core.files import File
 from django.core.files.storage import default_storage
 import os
 from django.core.files.base import ContentFile
-from django_resized import ResizedImageField
+
 
 # Customized user model
 class CustomUser(AbstractBaseUser):

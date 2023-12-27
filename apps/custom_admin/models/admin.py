@@ -4,6 +4,7 @@ import uuid
 # Create your models here.
 from django.contrib.auth.models import AbstractBaseUser
 from ..manager import AdminManager
+from unfold.admin import ModelAdmin
 
 # Customized admin model
 class CustomAdmin(AbstractBaseUser):

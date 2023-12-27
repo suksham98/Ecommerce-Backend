@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from .models.user import CustomUser
+from .models.user_cart import UserCart
 from ..custom_admin.models.categories import Categories
+from ..custom_admin.models.subcategories import SubCategories
+from ..custom_admin.models.products import Products
 from utils.common_functions import hash_password, create_thumbnail, create_thumbnail
 
 
@@ -61,7 +64,23 @@ class CategorySerializer(serializers.ModelSerializer):
 class CommonUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
+        fields = ['_id', 'first_name', 'last_name', 'email','phone_number', 'password', 'user_profile_image', 'user_profile_image_thumbnail']
+
+
+class SubCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubCategories
         fields = ('__all__')
 
 
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Products
+        fields = ('__all__')
+
+
+class UserCartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserCart
+        fields = ('__all__')
 

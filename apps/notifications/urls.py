@@ -10,9 +10,6 @@ urlpatterns = [
         ),
         name="firebase-messaging-sw.js"
     ),
-    # path("device_details/", DeviceDetailView.as_view),
-    # path("notify/", send_notifications),
     path("send_notification/", send_notification_view),
     path("register_device/", RegisterDeviceView.as_view())
-
 ]
